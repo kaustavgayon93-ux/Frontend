@@ -1,0 +1,65 @@
+name: Build ASSAC MRV Field Collect APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Build APK with Gradle
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleRelease --stacktrace
+
+      - name: Copy & Rename APK
+        run: |
+          mkdir -p dist
+          cp android/app/build/outputs/apk/release/app-release.apk dist/ASSAC-MRV-Field-Collect.apk
+          ls -la dist/
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ASSAC-MRV-Field-Collect-APK
+          path: dist/ASSAC-MRV-Field-Collect.apk
+          retention-days: 30
+
+      - name: Create or Update GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/heads/main')
+        with:
+          tag_name: v2.0.0
+          name: "ASSAC MRV Field Collect v2.0.0 (Offline Android App)"
+          body: |
+            ### Assam State Space Applications Centre (ASSAC)
+            **MRV Field Data Collection Mobile Application (NESFIC-D-15)**
+
+            - 100% Standalone Offline APK (Does not require external websites or internet connectivity)
+            - Real-time GPS coordinate auto-capture with accuracy tracking
+            - Assam indigenous tree species enumeration (Sal, Teak, Gamari, Hollong, Nahor, Bamboo, etc.)
+            - Built-in FSI 2020 allometric biomass & carbon stock calculator
+            - Offline quadrate storage with CSV / JSON export and central server sync
+          files: dist/ASSAC-MRV-Field-Collect.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
