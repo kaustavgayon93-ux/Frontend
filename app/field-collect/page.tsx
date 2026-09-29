@@ -167,6 +167,31 @@ export default function FieldCollectPage() {
         </Button>
       </div>
 
+      {/* Direct Android APK Download Banner */}
+      <a 
+        href="/ASSAC-MRV-Field-Collect.apk" 
+        download="ASSAC-MRV-Field-Collect.apk"
+        className="flex items-center justify-between p-3.5 bg-gradient-to-r from-slate-900 via-emerald-950 to-forest-900 text-white rounded-xl shadow-md border border-emerald-600/40 hover:border-emerald-400 transition group"
+      >
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center shrink-0">
+            <Download className="w-5 h-5 text-emerald-300 group-hover:scale-110 transition-transform" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-sm text-white">Download Android App (.apk)</span>
+              <span className="text-[10px] bg-emerald-500/30 text-emerald-300 px-1.5 py-0.2 rounded font-mono font-bold">1.19 MB</span>
+            </div>
+            <p className="text-[11px] text-slate-300">
+              Native Android package (v1.0.0) for beat guards & surveyors (runs offline)
+            </p>
+          </div>
+        </div>
+        <span className="hidden sm:inline-block bg-emerald-500 text-slate-950 font-bold text-xs px-3 py-1.5 rounded-lg group-hover:bg-emerald-400 transition">
+          Download APK
+        </span>
+      </a>
+
       {/* Saved / Cached Offline Plots List */}
       <div className="space-y-3">
         <div className="flex justify-between items-center px-1">

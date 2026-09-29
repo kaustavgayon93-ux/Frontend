@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { 
   FolderKanban, Map as MapIcon, Leaf, AlertTriangle, Plus, 
   Satellite, Smartphone, Shield, ArrowUpRight, TrendingUp, 
-  TreePine, Sparkles, Filter, CheckCircle2, ChevronRight, FileDown, Navigation
+  TreePine, Sparkles, Filter, CheckCircle2, ChevronRight, FileDown, Navigation, Download
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -80,6 +80,11 @@ export default function Dashboard() {
               <Smartphone className="w-4 h-4" /> Open Field Data App
             </Button>
           </Link>
+          <a href="/ASSAC-MRV-Field-Collect.apk" download="ASSAC-MRV-Field-Collect.apk">
+            <Button variant="outline" className="bg-emerald-900/60 border-emerald-600/80 text-emerald-200 hover:bg-emerald-800 text-xs h-10 flex items-center gap-1.5 font-bold">
+              <Download className="w-4 h-4 text-emerald-300" /> Download APK (1.19 MB)
+            </Button>
+          </a>
           <Link href="/satellite">
             <Button variant="outline" className="bg-slate-800/80 border-slate-700 text-white hover:bg-slate-700 text-xs h-10">
               <Satellite className="w-4 h-4 mr-1.5 text-blue-400" /> Satellite Ingestion
