@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { FolderKanban, Map as MapIcon, Leaf, AlertTriangle, Plus, Play, FileText } from 'lucide-react';
+import { FolderKanban, Map as MapIcon, Leaf, AlertTriangle, Plus, Play, FileText, Shield } from 'lucide-react';
 import { StatCard } from '@/components/dashboard/StatCard';
 import { Button } from '@/components/ui/button';
 import { api, isLoggedIn } from '@/lib/api';
