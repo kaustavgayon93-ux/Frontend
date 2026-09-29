@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASSAC MRV Platform Dashboard</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.15); }
+    }
+    .ping-slow { animation: pulse-slow 2.5s infinite; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 antialiased p-3 sm:p-6 min-h-screen">
+  <div class="bg-slate-900 text-slate-100 border border-slate-800 rounded-2xl p-5 shadow-xl max-w-5xl mx-auto space-y-5">
+    
+    <!-- Top Header -->
+    <div class="bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 text-white p-5 rounded-xl border border-emerald-800/40 shadow-lg flex flex-col md:flex-row justify-between md:items-center gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-1">
+          <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+            Assam State Space Applications Centre (ASSAC)
+          </span>
+          <span class="text-slate-400 text-xs">• Stream 1 · NESFIC-D-15</span>
+        </div>
+        <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+          Forest & Plantation Monitoring and Biomass Assessment
+        </h1>
+        <p class="text-xs text-slate-300 mt-0.5">
+          Ashtalakshmi for Viksit Bharat 2047 • Sentinel-2 & SAR Ingestion • Ground-Truth Verification
+        </p>
+      </div>
+
+      <!-- Quick Action Buttons including Direct APK Download -->
+      <div class="flex flex-wrap gap-2">
+        <a 
+          href="ASSAC-MRV-Field-Collect.apk" 
+          download="ASSAC-MRV-Field-Collect.apk"
+          class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3.5 py-2 rounded-lg shadow-md flex items-center gap-1.5 transition"
+          title="Download Standalone Offline Android APK v2.0.0 (Bundled offline assets)"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Download Offline APK (v2.0.0 • 4.41 MB)
+        </a>
+        <a 
+          href="https://github.com/kaustavgayon93-ux/Frontend/releases/tag/v2.0.0" 
+          target="_blank"
+          class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold text-xs px-3 py-2 rounded-lg flex items-center gap-1.5 transition"
+        >
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          GitHub Release (v2.0.0)
+        </a>
+        <a 
+          href="http://localhost:3000/field-collect-offline.html" 
+          target="_blank"
+          class="bg-emerald-900/60 hover:bg-emerald-800 text-emerald-300 border border-emerald-700/60 font-semibold text-xs px-3 py-2 rounded-lg flex items-center gap-1.5 transition"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+          Live Field Tool
+        </a>
+      </div>
+    </div>
+
+    <!-- Division Filter Selector -->
+    <div class="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-slate-800">
+      <span class="text-xs font-bold text-slate-400 uppercase mr-1">Division:</span>
+      <button onclick="setDivision('all')" id="btn-all" class="div-btn bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold shrink-0 transition">
+        All Assam (6 Pilots)
+      </button>
+      <button onclick="setDivision('kaziranga')" id="btn-kaziranga" class="div-btn text-slate-400 hover:bg-[var(--accent)] px-3 py-1.5 rounded-lg text-xs font-semibold shrink-0 transition">
+        Kaziranga Buffer
+      </button>
+      <button onclick="setDivision('manas')" id="btn-manas" class="div-btn text-slate-400 hover:bg-[var(--accent)] px-3 py-1.5 rounded-lg text-xs font-semibold shrink-0 transition">
+        Manas Corridor
+      </button>
+      <button onclick="setDivision('karbi')" id="btn-karbi" class="div-btn text-slate-400 hover:bg-[var(--accent)] px-3 py-1.5 rounded-lg text-xs font-semibold shrink-0 transition">
+        Karbi Anglong East
+      </button>
+      <button onclick="setDivision('kamrup')" id="btn-kamrup" class="div-btn text-slate-400 hover:bg-[var(--accent)] px-3 py-1.5 rounded-lg text-xs font-semibold shrink-0 transition">
+        Kamrup Social Forestry
+      </button>
+      <button onclick="setDivision('dimahasao')" id="btn-dimahasao" class="div-btn text-slate-400 hover:bg-[var(--accent)] px-3 py-1.5 rounded-lg text-xs font-semibold shrink-0 transition">
+        Dima Hasao
+      </button>
+      <button onclick="setDivision('jorhat')" id="btn-jorhat" class="div-btn text-slate-400 hover:bg-[var(--accent)] px-3 py-1.5 rounded-lg text-xs font-semibold shrink-0 transition">
+        Jorhat Riverine
+      </button>
+    </div>
+
+    <!-- Dynamic KPI Cards Strip -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-xl border-l-4 border-l-blue-500 shadow-sm">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Monitored Area</span>
+        <div class="text-xl font-black text-slate-100 mt-0.5" id="kpi-area">120,950 ha</div>
+        <span class="text-[11px] text-blue-600 font-medium block mt-0.5" id="kpi-plantation">34,950 ha plantation</span>
+      </div>
+
+      <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-xl border-l-4 border-l-emerald-500 shadow-sm">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Carbon Stock</span>
+        <div class="text-xl font-black text-emerald-600 mt-0.5" id="kpi-carbon">3,219,500</div>
+        <span class="text-[11px] text-emerald-700 font-medium block mt-0.5">tCO2e sequestered</span>
+      </div>
+
+      <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-xl border-l-4 border-l-green-600 shadow-sm">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Net Verra VCUs</span>
+        <div class="text-xl font-black text-green-700 mt-0.5" id="kpi-credits">2,575,600</div>
+        <span class="text-[11px] text-gray-500 font-medium block mt-0.5">After 20% risk buffer</span>
+      </div>
+
+      <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-xl border-l-4 border-l-amber-500 shadow-sm">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Attention Alerts</span>
+        <div class="text-xl font-black text-amber-600 mt-0.5" id="kpi-alerts">4 Active</div>
+        <span class="text-[11px] text-amber-700 font-medium block mt-0.5">Canopy loss / mortality</span>
+      </div>
+    </div>
+
+    <!-- Main Interactive GIS Vector Map of Assam -->
+    <div class="relative bg-slate-950 text-white rounded-xl border border-slate-800 overflow-hidden shadow-inner h-[380px]">
+      <!-- Map Background & Grid -->
+      <div class="absolute inset-0 opacity-20 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+
+      <!-- SVG Map Vectors -->
+      <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <!-- Brahmaputra River Course -->
+        <path d="M 94,26 Q 76,34 60,42 T 34,48 T 12,56" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" opacity="0.8"/>
+        
+        <!-- NDVI Green Heatmap Halos -->
+        <circle cx="56" cy="42" r="9" fill="#10b981" fill-opacity="0.35" />
+        <circle cx="21" cy="38" r="8" fill="#059669" fill-opacity="0.4" />
+        <circle cx="61" cy="56" r="11" fill="#047857" fill-opacity="0.38" />
+        <circle cx="53" cy="74" r="10" fill="#065f46" fill-opacity="0.4" />
+        <circle cx="34" cy="54" r="7" fill="#10b981" fill-opacity="0.3" />
+
+        <!-- Division Ellipses -->
+        <ellipse id="map-kaziranga" cx="56" cy="42" rx="7" ry="5" fill="#166534" fill-opacity="0.4" stroke="#22c55e" stroke-width="1.2" class="cursor-pointer hover:fill-opacity-70 transition" onclick="showDivisionInfo('kaziranga')"/>
+        <ellipse id="map-manas" cx="21" cy="38" rx="6.5" ry="4.5" fill="#166534" fill-opacity="0.4" stroke="#22c55e" stroke-width="1.2" class="cursor-pointer hover:fill-opacity-70 transition" onclick="showDivisionInfo('manas')"/>
+        <ellipse id="map-karbi" cx="61" cy="56" rx="8" ry="6" fill="#166534" fill-opacity="0.4" stroke="#22c55e" stroke-width="1.2" class="cursor-pointer hover:fill-opacity-70 transition" onclick="showDivisionInfo('karbi')"/>
+        <ellipse id="map-kamrup" cx="34" cy="54" rx="6" ry="4" fill="#166534" fill-opacity="0.4" stroke="#22c55e" stroke-width="1.2" class="cursor-pointer hover:fill-opacity-70 transition" onclick="showDivisionInfo('kamrup')"/>
+        <ellipse id="map-dimahasao" cx="53" cy="74" rx="7" ry="5.5" fill="#166534" fill-opacity="0.4" stroke="#22c55e" stroke-width="1.2" class="cursor-pointer hover:fill-opacity-70 transition" onclick="showDivisionInfo('dimahasao')"/>
+        <ellipse id="map-jorhat" cx="74" cy="36" rx="5.5" ry="4" fill="#166534" fill-opacity="0.4" stroke="#22c55e" stroke-width="1.2" class="cursor-pointer hover:fill-opacity-70 transition" onclick="showDivisionInfo('jorhat')"/>
+      </svg>
+
+      <!-- Division Labels Overlay -->
+      <div onclick="showDivisionInfo('kaziranga')" class="absolute left-[56%] top-[42%] -translate-x-1/2 -translate-y-1/2 bg-slate-900/90 text-emerald-400 border border-emerald-600/60 px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer hover:scale-105 transition">Kaziranga Buffer</div>
+      <div onclick="showDivisionInfo('manas')" class="absolute left-[21%] top-[38%] -translate-x-1/2 -translate-y-1/2 bg-slate-900/90 text-emerald-400 border border-emerald-600/60 px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer hover:scale-105 transition">Manas Buffer</div>
+      <div onclick="showDivisionInfo('karbi')" class="absolute left-[61%] top-[56%] -translate-x-1/2 -translate-y-1/2 bg-slate-900/90 text-emerald-400 border border-emerald-600/60 px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer hover:scale-105 transition">Karbi Anglong East</div>
+      <div onclick="showDivisionInfo('kamrup')" class="absolute left-[34%] top-[54%] -translate-x-1/2 -translate-y-1/2 bg-slate-900/90 text-emerald-400 border border-emerald-600/60 px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer hover:scale-105 transition">Kamrup Forestry</div>
+      <div onclick="showDivisionInfo('dimahasao')" class="absolute left-[53%] top-[74%] -translate-x-1/2 -translate-y-1/2 bg-slate-900/90 text-emerald-400 border border-emerald-600/60 px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer hover:scale-105 transition">Dima Hasao</div>
+      <div onclick="showDivisionInfo('jorhat')" class="absolute left-[74%] top-[36%] -translate-x-1/2 -translate-y-1/2 bg-slate-900/90 text-emerald-400 border border-emerald-600/60 px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer hover:scale-105 transition">Jorhat Buffer</div>
+
+      <!-- Sample Plot Markers -->
+      <div onclick="showPlotInfo('KAZ-001')" class="absolute left-[54%] top-[45%] -translate-x-1/2 -translate-y-1/2 cursor-pointer z-10" title="Plot KAZ-001">
+        <div class="w-3.5 h-3.5 rounded-full bg-emerald-500 border border-white flex items-center justify-center text-[8px] font-bold text-slate-950 shadow">P1</div>
+      </div>
+      <div onclick="showPlotInfo('MAN-001')" class="absolute left-[23%] top-[40%] -translate-x-1/2 -translate-y-1/2 cursor-pointer z-10" title="Plot MAN-001">
+        <div class="w-3.5 h-3.5 rounded-full bg-emerald-500 border border-white flex items-center justify-center text-[8px] font-bold text-slate-950 shadow">P2</div>
+      </div>
+      <div onclick="showPlotInfo('KAR-001')" class="absolute left-[63%] top-[58%] -translate-x-1/2 -translate-y-1/2 cursor-pointer z-10" title="Plot KAR-001">
+        <div class="w-3.5 h-3.5 rounded-full bg-emerald-500 border border-white flex items-center justify-center text-[8px] font-bold text-slate-950 shadow">P3</div>
+      </div>
+
+      <!-- Alert Hotspot (Critical) -->
+      <div onclick="showAlertInfo('ALT-001')" class="absolute left-[58%] top-[41%] -translate-x-1/2 -translate-y-1/2 cursor-pointer z-20" title="Critical Canopy Loss Alert">
+        <div class="relative flex items-center justify-center">
+          <span class="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-red-400 opacity-75"></span>
+          <div class="relative w-4 h-4 rounded-full bg-red-600 border border-white flex items-center justify-center text-[8px] font-bold">!</div>
+        </div>
+      </div>
+
+      <!-- Interactive Map Inspector Card -->
+      <div id="map-popup" class="absolute bottom-3 left-3 right-3 sm:right-auto sm:max-w-xs bg-slate-900/95 border border-emerald-500/60 p-3 rounded-xl text-xs backdrop-blur-md shadow-2xl">
+        <div class="flex justify-between items-start border-b border-slate-800 pb-1.5 mb-1.5">
+          <div>
+            <span class="text-[9px] font-bold text-emerald-400 uppercase tracking-wider block" id="popup-type">Forest Division</span>
+            <h4 class="font-bold text-sm text-white" id="popup-title">Kaziranga Buffer Zone</h4>
+          </div>
+          <span class="text-[10px] text-slate-400" id="popup-meta">Golaghat & Nagaon</span>
+        </div>
+        <p class="text-[11px] text-slate-300 leading-tight mb-2" id="popup-desc">
+          Multi-species agroforestry buffer surrounding Kaziranga National Park to mitigate wildlife conflict.
+        </p>
+        <div class="flex justify-between text-[10px] text-emerald-300 font-mono pt-1 border-t border-slate-800/80">
+          <span id="popup-metric1">Area: 18,450 ha</span>
+          <span id="popup-metric2">Carbon: 485,200 tCO2e</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Two-Column Section: Growth Trajectory & Live Calculator -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      
+      <!-- Multi-Temporal Plantation Growth Series -->
+      <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800 space-y-3">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+          <div>
+            <h3 class="font-bold text-sm text-slate-100">Plantation Growth & Biomass Curve</h3>
+            <p class="text-[11px] text-slate-400">Time-series trajectory: Expected vs Observed DBH (cm)</p>
+          </div>
+          <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">FSI Calibrated</span>
+        </div>
+
+        <!-- SVG Growth Chart -->
+        <div class="h-44 w-full relative">
+          <svg class="w-full h-full" viewBox="0 0 100 50" preserveAspectRatio="none">
+            <!-- Gridlines -->
+            <line x1="10" y1="10" x2="95" y2="10" stroke="currentColor" stroke-opacity="0.1"/>
+            <line x1="10" y1="25" x2="95" y2="25" stroke="currentColor" stroke-opacity="0.1"/>
+            <line x1="10" y1="40" x2="95" y2="40" stroke="currentColor" stroke-opacity="0.1"/>
+
+            <!-- Target Expected Curve (Dotted) -->
+            <path d="M 12,44 Q 30,36 50,26 T 90,12" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="2,2"/>
+
+            <!-- Actual Observed Growth Curve (Solid Green) -->
+            <path d="M 12,43 Q 30,34 50,23 T 90,9" fill="none" stroke="#15803d" stroke-width="2"/>
+            
+            <!-- Shaded Area Under Curve -->
+            <path d="M 12,43 Q 30,34 50,23 T 90,9 L 90,48 L 12,48 Z" fill="#22c55e" fill-opacity="0.15"/>
+
+            <!-- Data Points -->
+            <circle cx="12" cy="43" r="1.5" fill="#15803d"/>
+            <circle cx="30" cy="34" r="1.5" fill="#15803d"/>
+            <circle cx="50" cy="23" r="1.5" fill="#15803d"/>
+            <circle cx="70" cy="15" r="1.5" fill="#15803d"/>
+            <circle cx="90" cy="9" r="1.5" fill="#15803d"/>
+          </svg>
+          <div class="flex justify-between text-[9px] text-slate-400 px-2 pt-1 font-mono">
+            <span>Yr 1 (4.8cm)</span>
+            <span>Yr 3 (12.9cm)</span>
+            <span>Yr 5 (21.4cm)</span>
+            <span>Yr 7 (27.8cm)</span>
+            <span>Yr 10 (35.5cm)</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 text-center text-xs pt-1 border-t border-slate-800">
+          <div><span class="text-[10px] text-gray-400 block">Survival</span><b>89.4%</b></div>
+          <div><span class="text-[10px] text-gray-400 block">MAI Volume</span><b class="text-emerald-600">14.2 m³/ha</b></div>
+          <div><span class="text-[10px] text-gray-400 block">Annual Rate</span><b class="text-green-700">9.2 tCO2e/ha</b></div>
+        </div>
+      </div>
+
+      <!-- Live Allometric Biomass Calculator -->
+      <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800 space-y-3">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+          <div>
+            <h3 class="font-bold text-sm text-slate-100">Live Tree Allometric Calculator</h3>
+            <p class="text-[11px] text-slate-400">Chave 2014 & FSI Moist Deciduous Allometric Model</p>
+          </div>
+          <span class="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded">On-Device Engine</span>
+        </div>
+
+        <div class="space-y-2.5 text-xs">
+          <div>
+            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-0.5">Assam Tree Species</label>
+            <select id="calc-species" onchange="calculateBiomass()" class="w-full h-8 px-2 border rounded-md bg-slate-900 text-slate-100 text-xs">
+              <option value="0.72">Hollong (Dipterocarpus macrocarpus) - 0.72 g/cm³</option>
+              <option value="0.82" selected>Sal (Shorea robusta) - 0.82 g/cm³</option>
+              <option value="0.65">Teak / Segun (Tectona grandis) - 0.65 g/cm³</option>
+              <option value="0.51">Gamari (Gmelina arborea) - 0.51 g/cm³</option>
+              <option value="0.94">Nahar / Ironwood (Mesua ferrea) - 0.94 g/cm³</option>
+              <option value="0.68">Jati Bamboo (Bambusa tulda) - 0.68 g/cm³</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[10px] font-bold text-slate-400 uppercase mb-0.5">DBH (cm)</label>
+              <input type="number" id="calc-dbh" value="38.5" step="0.5" oninput="calculateBiomass()" class="w-full h-8 px-2 border rounded-md bg-slate-900 text-slate-100 font-mono text-xs"/>
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-400 uppercase mb-0.5">Height (m)</label>
+              <input type="number" id="calc-height" value="21.0" step="0.5" oninput="calculateBiomass()" class="w-full h-8 px-2 border rounded-md bg-slate-900 text-slate-100 font-mono text-xs"/>
+            </div>
+          </div>
+
+          <!-- Real-Time Biomass & Carbon Output -->
+          <div class="grid grid-cols-4 gap-1.5 bg-emerald-50 border border-emerald-300 p-2.5 rounded-lg text-center text-xs">
+            <div>
+              <span class="text-[9px] text-gray-500 uppercase block">AGB</span>
+              <span class="font-bold text-gray-900" id="res-agb">685.2 kg</span>
+            </div>
+            <div>
+              <span class="text-[9px] text-gray-500 uppercase block">BGB (Roots)</span>
+              <span class="font-bold text-gray-900" id="res-bgb">178.1 kg</span>
+            </div>
+            <div>
+              <span class="text-[9px] text-gray-500 uppercase block">Carbon</span>
+              <span class="font-bold text-emerald-700" id="res-carbon">405.8 kg</span>
+            </div>
+            <div>
+              <span class="text-[9px] text-gray-500 uppercase block">CO2e</span>
+              <span class="font-black text-green-800" id="res-tco2e">1.49 tCO2e</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Areas Requiring Attention & Expansion Feed -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+      <div class="p-3.5 bg-red-50/50 border border-red-200 rounded-xl space-y-2">
+        <div class="flex justify-between items-center">
+          <span class="font-bold text-red-900 flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-red-600"></span> Critical Attention Alert
+          </span>
+          <span class="text-[10px] bg-red-200 text-red-900 font-bold px-1.5 py-0.2 rounded">Sentinel-2 MSI</span>
+        </div>
+        <h4 class="font-bold text-gray-900">Sudden Canopy Loss Detected (Diffloo Beat, Sector 4)</h4>
+        <p class="text-gray-600 text-[11px]">
+          4.8 hectares buffer strip experienced NDVI decline from 0.76 to 0.50 within a 10-day satellite revisit window.
+        </p>
+        <div class="text-[10px] text-red-800 font-mono">
+          Action: Dispatched joint beat team to verify illegal felling vs flood scouring.
+        </div>
+      </div>
+
+      <div class="p-3.5 bg-emerald-50/50 border border-emerald-200 rounded-xl space-y-2">
+        <div class="flex justify-between items-center">
+          <span class="font-bold text-emerald-950 flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-emerald-600"></span> AI Expansion Opportunity
+          </span>
+          <span class="text-[10px] bg-emerald-200 text-emerald-900 font-bold px-1.5 py-0.2 rounded">Score 94/100</span>
+        </div>
+        <h4 class="font-bold text-gray-900">Manja-Langvoku Degraded Scrub Valley (420 ha)</h4>
+        <p class="text-gray-600 text-[11px]">
+          Degraded open scrub suitable for enrichment planting with Gamari, Jati Bamboo, and Hollong.
+        </p>
+        <div class="text-[10px] text-emerald-800 font-mono">
+          10-Yr Sequestration Potential: +48,500 tCO2e (38,800 Net VCUs).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const DIVISIONS = {
+      all: { area: "120,950 ha", plantation: "34,950 ha", carbon: "3,219,500", credits: "2,575,600", alerts: "4 Active" },
+      kaziranga: { area: "18,450 ha", plantation: "4,850 ha", carbon: "485,200", credits: "373,604", alerts: "1 Critical" },
+      manas: { area: "22,100 ha", plantation: "6,200 ha", carbon: "562,100", credits: "432,817", alerts: "1 High" },
+      karbi: { area: "34,500 ha", plantation: "8,900 ha", carbon: "890,400", credits: "685,608", alerts: "1 Medium" },
+      kamrup: { area: "14,200 ha", plantation: "4,100 ha", carbon: "312,800", credits: "240,856", alerts: "0 Active" },
+      dimahasao: { area: "28,900 ha", plantation: "7,300 ha", carbon: "724,000", credits: "557,480", alerts: "1 Medium" },
+      jorhat: { area: "12,800 ha", plantation: "3,600 ha", carbon: "245,000", credits: "188,650", alerts: "0 Active" }
+    };
+
+    function setDivision(id) {
+      document.querySelectorAll('.div-btn').forEach(b => {
+        b.classList.remove('bg-emerald-700', 'text-white');
+        b.classList.add('text-slate-400');
+      });
+      const btn = document.getElementById('btn-' + id);
+      if (btn) {
+        btn.classList.add('bg-emerald-700', 'text-white');
+        btn.classList.remove('text-slate-400');
+      }
+
+      const d = DIVISIONS[id] || DIVISIONS.all;
+      document.getElementById('kpi-area').innerText = d.area;
+      document.getElementById('kpi-plantation').innerText = d.plantation + ' plantation';
+      document.getElementById('kpi-carbon').innerText = d.carbon;
+      document.getElementById('kpi-credits').innerText = d.credits;
+      document.getElementById('kpi-alerts').innerText = d.alerts;
+
+      if (id !== 'all') {
+        showDivisionInfo(id);
+      }
+    }
+
+    function showDivisionInfo(id) {
+      const names = {
+        kaziranga: { title: "Kaziranga Buffer Zone", meta: "Golaghat & Nagaon", desc: "Corridor buffer zone with multi-species agroforestry to mitigate human-elephant conflict.", m1: "Area: 18,450 ha", m2: "Carbon: 485,200 tCO2e" },
+        manas: { title: "Manas Tiger Reserve Buffer", meta: "Baksa & Chirang", desc: "Corridor reforestation connecting Manas National Park with Royal Manas Bhutan.", m1: "Area: 22,100 ha", m2: "Carbon: 562,100 tCO2e" },
+        karbi: { title: "Karbi Anglong East", meta: "Diphu HQ", desc: "Indigenous Sal and commercial bamboo plantations with high carbon sequestration.", m1: "Area: 34,500 ha", m2: "Carbon: 890,400 tCO2e" },
+        kamrup: { title: "Kamrup Social Forestry", meta: "Guwahati HQ", desc: "Riverbank stabilization and hill slope compensatory afforestation blocks.", m1: "Area: 14,200 ha", m2: "Carbon: 312,800 tCO2e" },
+        dimahasao: { title: "Dima Hasao Hill Slope", meta: "Haflong HQ", desc: "Barak-Brahmaputra watershed catchment revegetation.", m1: "Area: 28,900 ha", m2: "Carbon: 724,000 tCO2e" },
+        jorhat: { title: "Jorhat Riverine Buffer", meta: "Jorhat HQ", desc: "Sandbar (chapori) afforestation using Simul, Khair, and Sissoo flood-resilient species.", m1: "Area: 12,800 ha", m2: "Carbon: 245,000 tCO2e" }
+      };
+      const info = names[id];
+      if (!info) return;
+      document.getElementById('popup-type').innerText = "Forest Division";
+      document.getElementById('popup-title').innerText = info.title;
+      document.getElementById('popup-meta').innerText = info.meta;
+      document.getElementById('popup-desc').innerText = info.desc;
+      document.getElementById('popup-metric1').innerText = info.m1;
+      document.getElementById('popup-metric2').innerText = info.m2;
+    }
+
+    function showPlotInfo(code) {
+      document.getElementById('popup-type').innerText = "Ground-Truth Sample Plot";
+      document.getElementById('popup-title').innerText = "Sample Plot " + code;
+      document.getElementById('popup-meta').innerText = "r = 15m (0.071 ha)";
+      document.getElementById('popup-desc').innerText = "Surveyed by beat officer with geotagged photo and tree stem enumeration.";
+      document.getElementById('popup-metric1').innerText = "Trees: 42 stems";
+      document.getElementById('popup-metric2').innerText = "AGB: 18.45 Mg (40.06 tCO2e)";
+    }
+
+    function showAlertInfo(code) {
+      document.getElementById('popup-type').innerText = "Critical Attention Alert";
+      document.getElementById('popup-title').innerText = "Sudden Canopy Loss (" + code + ")";
+      document.getElementById('popup-meta').innerText = "Sentinel-2 MSI";
+      document.getElementById('popup-desc').innerText = "4.8 ha canopy thinning detected in Kaziranga Sector 4. Field verification team dispatched.";
+      document.getElementById('popup-metric1').innerText = "NDVI Drop: -34.2%";
+      document.getElementById('popup-metric2').innerText = "Status: DISPATCHED";
+    }
+
+    function calculateBiomass() {
+      const density = parseFloat(document.getElementById('calc-species').value) || 0.65;
+      const dbh = parseFloat(document.getElementById('calc-dbh').value) || 0;
+      const height = parseFloat(document.getElementById('calc-height').value) || 0;
+
+      if (dbh <= 0 || height <= 0) {
+        document.getElementById('res-agb').innerText = "0 kg";
+        document.getElementById('res-bgb').innerText = "0 kg";
+        document.getElementById('res-carbon').innerText = "0 kg";
+        document.getElementById('res-tco2e').innerText = "0 tCO2e";
+        return;
+      }
+
+      // Chave et al. 2014: AGB = 0.0673 * (density * DBH^2 * height)^0.976
+      const agb = 0.0673 * Math.pow(density * dbh * dbh * height, 0.976);
+      const bgb = agb * 0.26;
+      const carbon = (agb + bgb) * 0.47;
+      const tco2e = (carbon * (44 / 12)) / 1000;
+
+      document.getElementById('res-agb').innerText = agb.toFixed(1) + " kg";
+      document.getElementById('res-bgb').innerText = bgb.toFixed(1) + " kg";
+      document.getElementById('res-carbon').innerText = carbon.toFixed(1) + " kg";
+      document.getElementById('res-tco2e').innerText = tco2e.toFixed(3) + " tCO2e";
+    }
+
+    // Initialize calculator
+    calculateBiomass();
+  </script>
+</body>
+</html>
