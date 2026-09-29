@@ -16,21 +16,29 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("signingKey.keystore")
-            storePassword "CXhThGG5x58X"
-            keyAlias "assac-mrv"
-            keyPassword "CXhThGG5x58X"
+            if (file("signingKey.keystore").exists()) {
+                storeFile file("signingKey.keystore")
+                storePassword "CXhThGG5x58X"
+                keyAlias "assac-mrv"
+                keyPassword "CXhThGG5x58X"
+            }
         }
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            if (file("signingKey.keystore").exists()) {
+                signingConfig signingConfigs.release
+            } else {
+                signingConfig signingConfigs.debug
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            signingConfig signingConfigs.release
+            if (file("signingKey.keystore").exists()) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 
